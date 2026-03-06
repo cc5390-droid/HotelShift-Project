@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSA Investment Potential Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🏢 MSA Investment Ranking Dashboard</h1>
+                <p>Interactive Analysis of US Metropolitan Statistical Areas Investment Potential</p>
+            </div>
+            <!-- AI Chat Button -->
+            <button id="aiChatBtn" class="ai-chat-toggle" onclick="toggleChatWindow()">
+                💬 AI Assistant
+            </button>
+        </header>
+
+        <!-- AI Chat Window -->
+        <div id="aiChatWindow" class="ai-chat-window hidden">
+            <div class="ai-chat-header">
+                <h3>🤖 AI Assistant</h3>
+                <button class="close-btn" onclick="toggleChatWindow()">×</button>
+            </div>
+            <div id="aiChatMessages" class="ai-chat-messages"></div>
+            <div class="ai-chat-input-area">
+                <input 
+                    type="text" 
+                    id="aiChatInput" 
+                    placeholder="Ask about MSA data or recent news..." 
+                    onkeypress="handleChatKeyPress(event)"
+                >
+                <button onclick="sendChatMessage()">Send</button>
+            </div>
+            <div id="ollamaStatus" class="ollama-status"></div>
+        </div>
+
+        <!-- Controls -->
+        <section class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search MSA by name or code..." onkeyup="handleSearchInput()">
+                <button onclick="searchMSA()">Search</button>
+                <ul id="suggestionsList" class="suggestions-list"></ul>
+            </div>
+            <div class="filter-buttons">
+                <button class="btn-active" onclick="setView('overview')">Overview</button>
+                <button onclick="setView('scoring')">Index Scoring</button>
+                <button onclick="setView('detailed')">Detailed Analysis</button>
+                <button onclick="setView('comparison')">6D Analysis</button>
+                <button onclick="setView('rawdata')">Raw Data</button>
+            </div>
+        </section>
+
+        <!-- Stats Cards -->
+        <section id="statsSection" class="stats-grid">
+            <div class="stat-card">
+                <h3>Total MSAs</h3>
+                <p class="stat-value" id="totalMSA">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Avg Score</h3>
+                <p class="stat-value" id="avgScore">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Top Score</h3>
+                <p class="stat-value" id="maxScore">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Year</h3>
+                <p class="stat-value" id="yearValue">2024</p>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section id="overviewView" class="view-section active">
+            <h2>Investment Score Distribution</h2>
+            <div class="chart-container">
+                <canvas id="distributionChart" height="80"></canvas>
+            </div>
+            
+            <h2>Top 10 MSAs Ranking</h2>
+            <div class="table-container">
+                <table id="rankingTable" class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>MSA Name</th>
+                            <th>Population</th>
+                            <th>Score</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Index Scoring Section -->
+        <section id="scoringView" class="view-section">
+            <h2>Investment Score: Interactive Weighting System</h2>
+            <p class="section-subtitle">Adjust the weights below to recalculate investment scores in real-time</p>
+            
+            <div class="info-box">
+                <strong>ℹ️ How it works:</strong> Each MSA is scored across 6 dimensions (Economic, Stability, Supply, Pricing, Valuation, Capital), 
+                each normalized to a 0-1 scale. Adjust the weights below to customize your investment priorities. 
+                The final score ranges from 0-100 and shows <strong>how rankings change</strong> based on your weighting strategy.
+                <br><strong>Current range:</strong> Scores typically fall between 20-75 depending on the weights applied.
+            </div>
+            
+            <div class="scoring-container">
+                <div class="weights-panel">
+                    <h3>📊 Configure Weights</h3>
+                    <div class="weight-controls">
+                        <div class="weight-item">
+                            <label>📈 Economic Index (Growth Metrics)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightEconomic" min="0" max="100" value="25" class="weight-slider" onchange="updateWeights()">
+                                <span id="valueEconomic" class="weight-value">25%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-item">
+                            <label>🛡️ Stability Index (Affordability)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightStability" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
+                                <span id="valueStability" class="weight-value">15%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-item">
+                            <label>📦 Supply Index (Market Tightness)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightSupply" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
+                                <span id="valueSupply" class="weight-value">15%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-item">
+                            <label>💰 Pricing Index (Rent Growth)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightPricing" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
+                                <span id="valuePricing" class="weight-value">15%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-item">
+                            <label>📊 Valuation Index (Property Value)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightValuation" min="0" max="100" value="20" class="weight-slider" onchange="updateWeights()">
+                                <span id="valueValuation" class="weight-value">20%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-item">
+                            <label>🏦 Capital Index (Cap Rates & Taxes)</label>
+                            <div class="weight-input-group">
+                                <input type="range" id="weightCapital" min="0" max="100" value="10" class="weight-slider" onchange="updateWeights()">
+                                <span id="valueCapital" class="weight-value">10%</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weight-total">
+                            <strong>Total Weight:</strong>
+                            <span id="totalWeight" class="total-value">100%</span>
+                        </div>
+                        <button class="reset-button" onclick="resetWeights()">↻ Reset to Default Weights</button>
+                    </div>
+                </div>
+                
+                <div class="scoring-results">
+                    <h3>🎯 Updated Rankings</h3>
+                    <div id="scoringTableContainer" class="table-container">
+                        <table class="ranking-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>MSA Name</th>
+                                    <th>New Score</th>
+                                    <th>Change</th>
+                                </tr>
+                            </thead>
+                            <tbody id="scoringTableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Raw Data Section -->
+        <section id="rawdataView" class="view-section">
+            <h2>Raw Data: All Factors & Metrics</h2>
+            <p class="section-subtitle">Complete dataset showing all 13 investment factors collected from Census API and market analysis</p>
+            
+            <div class="rawdata-controls">
+                <input type="text" id="rawDataSearch" placeholder="Search by MSA name..." style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 6px;">
+                <select id="rawDataSort" onchange="updateRawData()" style="padding: 10px; border: 1px solid #ccc; border-radius: 6px;">
+                    <option value="score">Sort by Score (Highest First)</option>
+                    <option value="population">Sort by Population</option>
+                    <option value="growth">Sort by Pop Growth</option>
+                    <option value="income">Sort by Income</option>
+                </select>
+                <button onclick="downloadRawData()" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer;">📥 Download CSV</button>
+            </div>
+
+            <div class="factor-legend">
+                <div class="legend-group">
+                    <h4>📊 Demographic Factors</h4>
+                    <ul>
+                        <li><strong>Total Population</strong> - MSA resident count</li>
+                        <li><strong>Pop Growth</strong> - Year-over-year population change (%)</li>
+                        <li><strong>Employment Rate</strong> - % of labor force employed</li>
+                        <li><strong>Median Household Income</strong> - Average annual income ($)</li>
+                        <li><strong>Income Growth</strong> - Year-over-year income change (%)</li>
+                    </ul>
+                </div>
+                
+                <div class="legend-group">
+                    <h4>🏠 Real Estate Factors</h4>
+                    <ul>
+                        <li><strong>Median Gross Rent</strong> - Average monthly rent ($)</li>
+                        <li><strong>Median House Value</strong> - Average property value ($)</li>
+                        <li><strong>Rent to Income Ratio</strong> - Monthly rent / monthly income (%)</li>
+                        <li><strong>Vacancy Rate</strong> - Empty units as % of total</li>
+                        <li><strong>Implied Value</strong> - Annual rent × cap rate</li>
+                    </ul>
+                </div>
+                
+                <div class="legend-group">
+                    <h4>💼 Investment Metrics</h4>
+                    <ul>
+                        <li><strong>Cap Spread</strong> - Hotel Cap Rate - Multifamily Cap Rate (%)</li>
+                        <li><strong>Tax Differential</strong> - Hotel tax rate - Multifamily tax rate (%)</li>
+                        <li><strong>HERS Index Score</strong> - Energy efficiency (lower = more efficient)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="table-container" style="margin-top: 30px;">
+                <table id="rawDataTable" class="ranking-table">
+                    <thead id="rawDataHeader">
+                        <!-- Populated by JavaScript -->
+                    </thead>
+                    <tbody id="rawDataBody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Detailed Analysis Section -->
+        <section id="detailedView" class="view-section">
+            <h2>Detailed MSA Analysis</h2>
+            <div class="msa-detail-container">
+                <div id="msaDetail" class="msa-detail">
+                    <p>Select an MSA from the ranking table to view detailed analysis.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6D Analysis Section -->
+        <section id="comparisonView" class="view-section">
+            <h2>6-Dimensional Market Comparison</h2>
+            <p class="section-subtitle">Compare markets across 6 key investment dimensions</p>
+            
+            <div class="comparison-controls">
+                <div class="comparison-control-item">
+                    <label for="msaSelector">Search for a specific MSA:</label>
+                    <input type="text" id="msaSelector" placeholder="Type MSA name to compare..." onkeyup="filterMSAList()">
+                    <div id="msaList" class="msa-list"></div>
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <canvas id="radarChart" height="80"></canvas>
+            </div>
+            <div class="dimensions-legend">
+                <div class="dimension">
+                    <span class="dim-label">📈 Economic Index:</span> Employment, Population & Income Growth
+                </div>
+                <div class="dimension">
+                    <span class="dim-label">🛡️ Stability Index:</span> Affordability & Market Stability
+                </div>
+                <div class="dimension">
+                    <span class="dim-label">📦 Supply Index:</span> Market Tightness & Occupancy
+                </div>
+                <div class="dimension">
+                    <span class="dim-label">💰 Pricing Index:</span> Rent Growth & Pricing Power
+                </div>
+                <div class="dimension">
+                    <span class="dim-label">📊 Valuation Index:</span> Property Value Potential
+                </div>
+                <div class="dimension">
+                    <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>📊 MSA Investment Analyzer | Data sourced from US Census Bureau ACS1 & Market Analysis | Last Updated: 2024</p>
+        </footer>
+    </div>
+
+    <!-- Modal for MSA Details -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
