@@ -960,7 +960,7 @@
                     <h3>📊 Configure Weights</h3>
                     <div class="weight-controls">
                         <div class="weight-item">
-                            <label>📈 Economic Index (Growth Metrics)</label>
+                            <label>📈 Economic Index (Employment, Population & Income Growth)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightEconomic" min="0" max="100" value="25" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueEconomic" class="weight-value">25%</span>
@@ -968,7 +968,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>🛡️ Stability Index (Affordability)</label>
+                            <label>🛡️ Stability Index (Rent-to-Income Ratio & Vacancy Rate)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightStability" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueStability" class="weight-value">15%</span>
@@ -976,7 +976,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>📦 Supply Index (Market Tightness)</label>
+                            <label>📦 Supply Index (New Multifamily Unit Supply)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightSupply" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueSupply" class="weight-value">15%</span>
@@ -992,7 +992,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>📊 Valuation Index (Property Value)</label>
+                            <label>📊 Valuation Index (Implied Property Value)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightValuation" min="0" max="100" value="20" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueValuation" class="weight-value">20%</span>
@@ -1000,7 +1000,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>🏦 Capital Index (Cap Rates & Taxes)</label>
+                            <label>🏦 Capital Index (Cap Rate Spread & Effective Tax Spread)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightCapital" min="0" max="100" value="10" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueCapital" class="weight-value">10%</span>
@@ -1213,7 +1213,7 @@
                         <li><strong>Median House Value</strong> - Average property value ($)</li>
                         <li><strong>Rent to Income Ratio</strong> - Monthly rent / monthly income (%)</li>
                         <li><strong>Vacancy Rate</strong> - Empty units as % of total</li>
-                        <li><strong>Implied Value</strong> - Annual rent × cap rate</li>
+                        <li><strong>Implied Value</strong> - Annual Rent × (1 - OER) / Cap Rate</li>
                     </ul>
                 </div>
                 
