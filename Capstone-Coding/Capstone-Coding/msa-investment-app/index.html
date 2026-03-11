@@ -891,10 +891,7 @@
                 <button class="btn-active" onclick="setView('overview')">Overview</button>
                 <button onclick="setView('scoring')">Index Scoring</button>
                 <button onclick="setView('detailed')">Detailed Analysis</button>
-<<<<<<< HEAD
                 <button onclick="setView('comparison')">6D Analysis</button>
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 <button onclick="setView('rawdata')">Raw Data</button>
             </div>
         </section>
@@ -1036,31 +1033,6 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
-            
-            <div class="dimensions-legend" style="margin-top: 40px;">
-                <h3 style="grid-column: 1/-1; color: #FFD700; margin-bottom: 20px;">6 Investment Dimensions</h3>
-                <div class="dimension">
-                    <span class="dim-label">📈 Economic Index:</span> Employment, Population & Income Growth
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🛡️ Stability Index:</span> Affordability & Market Stability
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📦 Supply Index:</span> Market Tightness & Occupancy
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">💰 Pricing Index:</span> Rent Growth & Pricing Power
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📊 Valuation Index:</span> Property Value Potential
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
-                </div>
-            </div>
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         </section>
         
         <!-- Raw Data Section -->
@@ -1132,7 +1104,6 @@
                     <p>Select an MSA from the ranking table to view detailed analysis.</p>
                 </div>
             </div>
-<<<<<<< HEAD
         </section>
 
         <!-- 6D Analysis Section -->
@@ -1147,16 +1118,10 @@
                     <div id="msaList" class="msa-list"></div>
                 </div>
             </div>
-=======
-            
-            <h2 style="margin-top: 50px;">6-Dimensional Market Comparison</h2>
-            <p class="section-subtitle">Compare markets across 6 key investment dimensions</p>
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             
             <div class="chart-container">
                 <canvas id="radarChart" height="80"></canvas>
             </div>
-<<<<<<< HEAD
             <div class="dimensions-legend">
                 <div class="dimension">
                     <span class="dim-label">📈 Economic Index:</span> Employment, Population & Income Growth
@@ -1177,8 +1142,6 @@
                     <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
                 </div>
             </div>
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         </section>
 
         <!-- Footer -->
@@ -1265,12 +1228,9 @@
                 renderTop10View();
                 console.log('✅ renderTop10View done');
                 
-<<<<<<< HEAD
                 renderComparisonView();
                 console.log('✅ renderComparisonView done');
                 
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 console.log('✅ All views rendered successfully');
             } catch (error) {
                 console.error(`❌ Error loading data (retries left=${retries}):`, error);
@@ -1311,10 +1271,7 @@
                 'overview': 'overviewView',
                 'scoring': 'scoringView',
                 'detailed': 'detailedView',
-<<<<<<< HEAD
                 'comparison': 'comparisonView',
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 'rawdata': 'rawdataView'
             };
 
@@ -1330,13 +1287,8 @@
                 renderScoringView();
             } else if (viewName === 'rawdata') {
                 renderRawDataView();
-<<<<<<< HEAD
             } else if (viewName === 'comparison') {
                 renderComparisonView();
-=======
-            } else if (viewName === 'detailed') {
-                renderDetailedView();
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             }
         }
 
@@ -1363,13 +1315,7 @@
         }
 
         function renderDistributionChart() {
-<<<<<<< HEAD
             const scores = allMSAs.map(m => m.Investment_Score || 0);
-=======
-            // Sort MSAs by Investment Score (highest to lowest)
-            const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
-            const scores = sorted.map(m => m.Investment_Score || 0);
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
 
             const ctx = document.getElementById('distributionChart');
             if (currentChart) currentChart.destroy();
@@ -1377,11 +1323,7 @@
             currentChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-<<<<<<< HEAD
                     labels: allMSAs.slice(0, 15).map(m => m.msa_name.substring(0, 20) + '...'),
-=======
-                    labels: sorted.slice(0, 15).map(m => m.msa_name.substring(0, 20) + '...'),
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                     datasets: [{
                         label: 'Investment Score',
                         data: scores.slice(0, 15),
@@ -1413,14 +1355,7 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
 
-<<<<<<< HEAD
             allMSAs.slice(0, 20).forEach((msa, index) => {
-=======
-            // Sort MSAs by Investment Score (highest to lowest)
-            const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
-
-            sorted.slice(0, 20).forEach((msa, index) => {
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -1632,12 +1567,7 @@
         function renderComparisonView() {
             console.log('📈 Rendering 6D Analysis View...');
 
-<<<<<<< HEAD
             const top3 = allMSAs.slice(0, 3);
-=======
-            const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
-            const top3 = sorted.slice(0, 3);
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             selectedMSAsForComparison = top3.map(m => m.msa_code);
             
             renderMSAList();
@@ -1778,13 +1708,10 @@
             return colors[idx % colors.length];
         }
 
-<<<<<<< HEAD
         // ========================================
         // MSA Detail View
         // ========================================
 
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         function showMSADetail(msaCode) {
             console.log(`🔍 Loading details for MSA ${msaCode}...`);
 
@@ -1863,32 +1790,11 @@
 
             document.getElementById('msaDetail').innerHTML = detailHtml;
             
-<<<<<<< HEAD
-=======
-            // Update 6D Analysis to show only this MSA
-            selectedMSAsForComparison = [msaCode];
-            renderRadarChart();
-            
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.getElementById('detailedView').classList.add('active');
             document.getElementById('detailedView').scrollIntoView({ behavior: 'smooth' });
         }
 
-<<<<<<< HEAD
-=======
-        function renderDetailedView() {
-            console.log('📈 Rendering Detailed View with 6D Analysis...');
-
-            const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
-            const top3 = sorted.slice(0, 3);
-            selectedMSAsForComparison = top3.map(m => m.msa_code);
-            
-            renderMSAList();
-            renderRadarChart();
-        }
-
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         // ========================================
         // Search and Autocomplete
         // ========================================
