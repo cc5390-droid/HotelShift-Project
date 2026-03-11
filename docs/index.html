@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MSA Investment Potential Analyzer</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
         /* =====================
@@ -1067,19 +1068,27 @@
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Employment Rate</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">Employment Rate = Employed / Labor Force Population</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Employment Rate} = \frac{\text{Employed}}{\text{Labor Force Population}} \]
+                            </div>
                         </div>
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Employment Growth</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= (Employed_t - Employed_t-1) / Employed_t-1</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Employment Growth} = \frac{\text{Employed}_{2024} - \text{Employed}_{2023}}{\text{Employed}_{2023}} \]
+                            </div>
                         </div>
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Population Growth</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= (Pop_t - Pop_t-1) / Pop_t-1</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Population Growth} = \frac{\text{Pop}_{2024} - \text{Pop}_{2023}}{\text{Pop}_{2023}} \]
+                            </div>
                         </div>
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Income Growth</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= (Income_t - Income_t-1) / Income_t-1</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Income Growth} = \frac{\text{Income}_{2024} - \text{Income}_{2023}}{\text{Income}_{2023}} \]
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1091,11 +1100,15 @@
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Rent-to-Income Ratio</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Median Rent / Median Income</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Rent-to-Income} = \frac{\text{Median Rent}}{\text{Median Income}} \]
+                            </div>
                         </div>
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Vacancy Rate</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Vacant Units / Total Units</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Vacancy Rate} = \frac{\text{Vacant Units}}{\text{Total Units}} \]
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1106,7 +1119,9 @@
                     <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Evaluates level of new multifamily housing supply.</p>
                     <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                         <strong style="color: #FFD700; font-size: 0.9em;">New Multi Units</strong>
-                        <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Total Multi Units_t - Total Multi Units_t-1</p>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{New Multi Units} = \text{Total Multi Units}_{2024} - \text{Total Multi Units}_{2023} \]
+                        </div>
                     </div>
                 </div>
                 
@@ -1116,7 +1131,9 @@
                     <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Measures ability of landlords to raise rents over time.</p>
                     <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                         <strong style="color: #FFD700; font-size: 0.9em;">Rent Growth</strong>
-                        <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= (Rent_t - Rent_t-1) / Rent_t-1</p>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{Rent Growth} = \frac{\text{Rent}_{2024} - \text{Rent}_{2023}}{\text{Rent}_{2023}} \]
+                        </div>
                     </div>
                 </div>
                 
@@ -1126,7 +1143,9 @@
                     <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Estimates stabilized asset value supported by rental income.</p>
                     <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                         <strong style="color: #FFD700; font-size: 0.9em;">Implied Value</strong>
-                        <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Annual Rent × (1 - OER) / Cap Rate</p>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{Implied Value} = \frac{\text{Annual Rent} \times (1 - \text{OER})}{\text{Cap Rate}} \]
+                        </div>
                     </div>
                 </div>
                 
@@ -1137,11 +1156,15 @@
                     <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Cap Spread</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Cap Rate_hotel - Cap Rate_MF</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Cap Spread} = \text{Cap Rate}_{\text{hotel}} - \text{Cap Rate}_{\text{MF}} \]
+                            </div>
                         </div>
                         <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
                             <strong style="color: #FFD700; font-size: 0.9em;">Effective Tax Spread</strong>
-                            <p style="color: #e0e0e0; font-size: 0.85em; margin-top: 6px;">= Tax Rate_hotel - Tax Rate_MF</p>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Tax Spread} = \text{Tax Rate}_{\text{hotel}} - \text{Tax Rate}_{\text{MF}} \]
+                            </div>
                         </div>
                     </div>
                 </div>
