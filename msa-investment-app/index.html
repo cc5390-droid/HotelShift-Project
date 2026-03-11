@@ -950,6 +950,7 @@
                 <strong>ℹ️ How it works:</strong> Each MSA is scored across 6 dimensions (Economic, Stability, Supply, Pricing, Valuation, Capital), 
                 each normalized to a 0-1 scale. Adjust the weights below to customize your investment priorities. 
                 The final score ranges from 0-100 and shows <strong>how rankings change</strong> based on your weighting strategy.
+                <br><strong>Scoring Formula:</strong> Investment Score = (Economic × 25% + Stability × 15% + Supply × 15% + Pricing × 15% + Valuation × 20% + Capital × 10%) × 100
                 <br><strong>Current range:</strong> Scores typically fall between 20-75 depending on the weights applied.
             </div>
             
@@ -1052,6 +1053,117 @@
                 </div>
                 <div class="dimension">
                     <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
+                </div>
+            </div>
+            
+            <!-- Detailed Factor Descriptions -->
+            <div style="margin-top: 50px; background: #2a2a2a; padding: 30px; border-bottom: 2px solid #D4AF37;">
+                <h3 style="color: #FFD700; margin-bottom: 30px; font-size: 1.3em;">📋 Detailed Factor Descriptions</h3>
+                
+                <!-- Economic Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">📈 Economic Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Economic Index evaluates the underlying strength and growth potential of an MSA's economic fundamentals. Strong economic fundamentals typically support sustained housing demand, higher household formation, and long-term rental market stability. Markets with robust employment, population growth, and rising incomes are more likely to sustain multifamily demand and support successful property conversions.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Employment Rate</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The share of the working-age population that is employed. Higher rates indicate stronger labor market conditions and a more stable renter base.</p>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Employment Growth</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">Year-over-year growth in total employment within the MSA. Strong employment growth signals expanding economic activity and increasing demand for housing.</p>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Population Growth</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">Annual change in total population. Population growth directly increases housing demand and often reflects broader economic attractiveness.</p>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Income Growth</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">Growth in median household income over time. Rising incomes increase households' ability to afford rent and support long-term rent growth.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Housing Stability Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">🛡️ Housing Stability Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Housing Stability Index evaluates the balance between housing affordability and market tightness. Markets with sustainable rent burdens and healthy occupancy levels tend to exhibit more stable rental demand and lower volatility.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Rent-to-Income Ratio</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The share of household income required to pay rent. Lower ratios indicate stronger housing affordability and a more sustainable rental market.</p>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Vacancy Rate</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The percentage of rental units that are unoccupied. Lower vacancy rates indicate stronger demand relative to available supply and a tighter rental market.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Supply Pressure Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">📦 Supply Pressure Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Supply Pressure Index evaluates the level of new multifamily housing supply entering the market. Rapid increases in new housing units may create competitive pressure on rents, while constrained supply can support rent growth.
+                    </p>
+                    <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700;">New Multifamily Units</strong>
+                        <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The annual change in the number of multifamily housing units. Higher values indicate stronger supply growth, which may increase competitive pressure on existing properties.</p>
+                    </div>
+                </div>
+                
+                <!-- Pricing Power Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">💰 Pricing Power Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Pricing Power Index measures the ability of landlords in a given market to raise rents over time. Sustained rent growth often reflects strong demand, limited supply, and favorable market dynamics for property owners.
+                    </p>
+                    <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700;">Rent Growth</strong>
+                        <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">Year-over-year change in average rent levels. Markets with stronger rent growth demonstrate greater pricing power and stronger underlying rental demand.</p>
+                    </div>
+                </div>
+                
+                <!-- Valuation Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">📊 Valuation Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Valuation Index estimates the potential stabilized asset value supported by current rental income levels in a given market. This metric helps evaluate whether a market can support multifamily property values that justify conversion or redevelopment costs.
+                    </p>
+                    <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700;">Multifamily Apartment Implied Value</strong>
+                        <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">Converts rental income into an estimated stabilized asset value using market cap rates and operating expense assumptions. Higher implied values suggest stronger asset valuation potential supported by local rent levels.</p>
+                        <p style="color: #999; font-size: 0.85em; margin-top: 10px; font-style: italic;">Formula: Implied Value = Annual Rent × (1 - Operating Expense Ratio) ÷ Multifamily Cap Rate</p>
+                    </div>
+                </div>
+                
+                <!-- Capital Market Index -->
+                <div style="background: #333333; padding: 25px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 25px;">
+                    <h4 style="color: #FFD700; margin-bottom: 15px; font-size: 1.1em;">🏦 Capital Market Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 15px; line-height: 1.6;">
+                        The Capital Market Index evaluates financial and regulatory factors that may influence the economic attractiveness of property conversion opportunities. These metrics capture differences in valuation, financing conditions, and tax treatment across asset classes.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Cap Spread</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The difference between hotel and multifamily capitalization rates. A wider spread may indicate conversion opportunities where hotel assets are valued at higher yields.</p>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 15px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700;">Effective Tax Spread</strong>
+                            <p style="color: #e0e0e0; font-size: 0.9em; margin-top: 8px;">The difference in effective property tax rates between hotel and multifamily properties. Higher hotel tax burdens may improve the economic case for conversions.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Data Sources -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-top: 25px;">
+                    <p style="color: #b0b0b0; font-size: 0.9em; line-height: 1.6;">
+                        <strong style="color: #FFD700;">Data Sources:</strong> Economic and demographic data are sourced from the U.S. Census Bureau (American Community Survey). Housing market indicators come from Census Bureau datasets. Cap rates and tax rates are compiled from publicly available market reports, municipal tax records, and industry data sources.
+                    </p>
                 </div>
             </div>
         </section>
