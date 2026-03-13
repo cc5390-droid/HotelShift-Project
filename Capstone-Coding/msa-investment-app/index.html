@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MSA Investment Potential Analyzer</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     
     <style>
         /* =====================
@@ -891,10 +892,6 @@
                 <button class="btn-active" onclick="setView('overview')">Overview</button>
                 <button onclick="setView('scoring')">Index Scoring</button>
                 <button onclick="setView('detailed')">Detailed Analysis</button>
-<<<<<<< HEAD
-                <button onclick="setView('comparison')">6D Analysis</button>
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 <button onclick="setView('rawdata')">Raw Data</button>
             </div>
         </section>
@@ -926,7 +923,7 @@
                 <canvas id="distributionChart" height="80"></canvas>
             </div>
             
-            <h2>Top 10 MSAs Ranking</h2>
+            <h2>Top 20 MSAs Ranking</h2>
             <div class="table-container">
                 <table id="rankingTable" class="ranking-table">
                     <thead>
@@ -954,6 +951,7 @@
                 <strong>ℹ️ How it works:</strong> Each MSA is scored across 6 dimensions (Economic, Stability, Supply, Pricing, Valuation, Capital), 
                 each normalized to a 0-1 scale. Adjust the weights below to customize your investment priorities. 
                 The final score ranges from 0-100 and shows <strong>how rankings change</strong> based on your weighting strategy.
+                <br><strong>Scoring Formula:</strong> Investment Score = (Economic × 25% + Stability × 15% + Supply × 15% + Pricing × 15% + Valuation × 20% + Capital × 10%) × 100
                 <br><strong>Current range:</strong> Scores typically fall between 20-75 depending on the weights applied.
             </div>
             
@@ -962,7 +960,7 @@
                     <h3>📊 Configure Weights</h3>
                     <div class="weight-controls">
                         <div class="weight-item">
-                            <label>📈 Economic Index (Growth Metrics)</label>
+                            <label>📈 Economic Index (Employment, Population & Income Growth)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightEconomic" min="0" max="100" value="25" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueEconomic" class="weight-value">25%</span>
@@ -970,7 +968,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>🛡️ Stability Index (Affordability)</label>
+                            <label>🛡️ Stability Index (Rent-to-Income Ratio & Vacancy Rate)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightStability" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueStability" class="weight-value">15%</span>
@@ -978,7 +976,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>📦 Supply Index (Market Tightness)</label>
+                            <label>📦 Supply Index (New Multifamily Unit Supply)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightSupply" min="0" max="100" value="15" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueSupply" class="weight-value">15%</span>
@@ -994,7 +992,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>📊 Valuation Index (Property Value)</label>
+                            <label>📊 Valuation Index (Implied Property Value)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightValuation" min="0" max="100" value="20" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueValuation" class="weight-value">20%</span>
@@ -1002,7 +1000,7 @@
                         </div>
                         
                         <div class="weight-item">
-                            <label>🏦 Capital Index (Cap Rates & Taxes)</label>
+                            <label>🏦 Capital Index (Cap Rate Spread & Effective Tax Spread)</label>
                             <div class="weight-input-group">
                                 <input type="range" id="weightCapital" min="0" max="100" value="10" class="weight-slider" onchange="updateWeights()">
                                 <span id="valueCapital" class="weight-value">10%</span>
@@ -1036,31 +1034,126 @@
                     </div>
                 </div>
             </div>
-<<<<<<< HEAD
-=======
             
-            <div class="dimensions-legend" style="margin-top: 40px;">
-                <h3 style="grid-column: 1/-1; color: #FFD700; margin-bottom: 20px;">6 Investment Dimensions</h3>
-                <div class="dimension">
-                    <span class="dim-label">📈 Economic Index:</span> Employment, Population & Income Growth
+            <!-- Detailed Factor Descriptions -->
+            <div style="margin-top: 50px; background: #2a2a2a; padding: 30px; border-bottom: 2px solid #D4AF37;">
+                <h3 style="color: #FFD700; margin-bottom: 30px; font-size: 1.3em;">📋 Factor Descriptions & Formulas</h3>
+                
+                <!-- Economic Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">📈 Economic Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Evaluates strength and growth potential of an MSA's economic fundamentals.</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Employment Rate</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Employment Rate} = \frac{\text{Employed}}{\text{Labor Force Population}} \]
+                            </div>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Employment Growth</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Employment Growth} = \frac{\text{Employed}_{2024} - \text{Employed}_{2023}}{\text{Employed}_{2023}} \]
+                            </div>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Population Growth</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Population Growth} = \frac{\text{Pop}_{2024} - \text{Pop}_{2023}}{\text{Pop}_{2023}} \]
+                            </div>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Income Growth</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Income Growth} = \frac{\text{Income}_{2024} - \text{Income}_{2023}}{\text{Income}_{2023}} \]
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="dimension">
-                    <span class="dim-label">🛡️ Stability Index:</span> Affordability & Market Stability
+                
+                <!-- Housing Stability Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">🛡️ Housing Stability Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Evaluates balance between housing affordability and market tightness.</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Rent-to-Income Ratio</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Rent-to-Income} = \frac{\text{Median Rent}}{\text{Median Income}} \]
+                            </div>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Vacancy Rate</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Vacancy Rate} = \frac{\text{Vacant Units}}{\text{Total Units}} \]
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="dimension">
-                    <span class="dim-label">📦 Supply Index:</span> Market Tightness & Occupancy
+                
+                <!-- Supply Pressure Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">📦 Supply Pressure Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Evaluates level of new multifamily housing supply.</p>
+                    <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700; font-size: 0.9em;">New Multi Units</strong>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{New Multi Units} = \text{Total Multi Units}_{2024} - \text{Total Multi Units}_{2023} \]
+                        </div>
+                    </div>
                 </div>
-                <div class="dimension">
-                    <span class="dim-label">💰 Pricing Index:</span> Rent Growth & Pricing Power
+                
+                <!-- Pricing Power Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">💰 Pricing Power Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Measures ability of landlords to raise rents over time.</p>
+                    <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700; font-size: 0.9em;">Rent Growth</strong>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{Rent Growth} = \frac{\text{Rent}_{2024} - \text{Rent}_{2023}}{\text{Rent}_{2023}} \]
+                        </div>
+                    </div>
                 </div>
-                <div class="dimension">
-                    <span class="dim-label">📊 Valuation Index:</span> Property Value Potential
+                
+                <!-- Valuation Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">📊 Valuation Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Estimates stabilized asset value supported by rental income.</p>
+                    <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                        <strong style="color: #FFD700; font-size: 0.9em;">Implied Value</strong>
+                        <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                            \[ \text{Implied Value} = \frac{\text{Annual Rent} \times (1 - \text{OER})}{\text{Cap Rate}} \]
+                        </div>
+                    </div>
                 </div>
-                <div class="dimension">
-                    <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
+                
+                <!-- Capital Market Index -->
+                <div style="background: #333333; padding: 20px; border-radius: 0; border-left: 4px solid #D4AF37; margin-bottom: 20px;">
+                    <h4 style="color: #FFD700; margin-bottom: 12px; font-size: 1em;">🏦 Capital Market Index</h4>
+                    <p style="color: #b0b0b0; margin-bottom: 12px; font-size: 0.9em;">Evaluates financial and regulatory factors for conversion.</p>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Cap Spread</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Cap Spread} = \text{Cap Rate}_{\text{hotel}} - \text{Cap Rate}_{\text{MF}} \]
+                            </div>
+                        </div>
+                        <div style="background: #2a2a2a; padding: 12px; border-left: 2px solid #D4AF37;">
+                            <strong style="color: #FFD700; font-size: 0.9em;">Effective Tax Spread</strong>
+                            <div style="color: #e0e0e0; font-size: 0.95em; margin-top: 8px;">
+                                \[ \text{Tax Spread} = \text{Tax Rate}_{\text{hotel}} - \text{Tax Rate}_{\text{MF}} \]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Data Sources -->
+                <div style="background: #333333; padding: 12px; border-radius: 0; border-left: 4px solid #D4AF37;">
+                    <p style="color: #b0b0b0; font-size: 0.85em;">
+                        <strong style="color: #FFD700;">Data Sources:</strong> U.S. Census Bureau, Industry Reports, Market Data
+                    </p>
                 </div>
             </div>
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         </section>
         
         <!-- Raw Data Section -->
@@ -1098,7 +1191,7 @@
                         <li><strong>Median House Value</strong> - Average property value ($)</li>
                         <li><strong>Rent to Income Ratio</strong> - Monthly rent / monthly income (%)</li>
                         <li><strong>Vacancy Rate</strong> - Empty units as % of total</li>
-                        <li><strong>Implied Value</strong> - Annual rent × cap rate</li>
+                        <li><strong>Implied Value</strong> - Annual Rent × (1 - OER) / Cap Rate</li>
                     </ul>
                 </div>
                 
@@ -1132,53 +1225,13 @@
                     <p>Select an MSA from the ranking table to view detailed analysis.</p>
                 </div>
             </div>
-<<<<<<< HEAD
-        </section>
-
-        <!-- 6D Analysis Section -->
-        <section id="comparisonView" class="view-section">
-            <h2>6-Dimensional Market Comparison</h2>
-            <p class="section-subtitle">Compare markets across 6 key investment dimensions</p>
-            
-            <div class="comparison-controls">
-                <div class="comparison-control-item">
-                    <label for="msaSelector">Search for a specific MSA:</label>
-                    <input type="text" id="msaSelector" placeholder="Type MSA name to compare..." onkeyup="filterMSAList()">
-                    <div id="msaList" class="msa-list"></div>
-                </div>
-            </div>
-=======
             
             <h2 style="margin-top: 50px;">6-Dimensional Market Comparison</h2>
             <p class="section-subtitle">Compare markets across 6 key investment dimensions</p>
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             
             <div class="chart-container">
                 <canvas id="radarChart" height="80"></canvas>
             </div>
-<<<<<<< HEAD
-            <div class="dimensions-legend">
-                <div class="dimension">
-                    <span class="dim-label">📈 Economic Index:</span> Employment, Population & Income Growth
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🛡️ Stability Index:</span> Affordability & Market Stability
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📦 Supply Index:</span> Market Tightness & Occupancy
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">💰 Pricing Index:</span> Rent Growth & Pricing Power
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📊 Valuation Index:</span> Property Value Potential
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Tax Rates
-                </div>
-            </div>
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         </section>
 
         <!-- Footer -->
@@ -1265,12 +1318,6 @@
                 renderTop10View();
                 console.log('✅ renderTop10View done');
                 
-<<<<<<< HEAD
-                renderComparisonView();
-                console.log('✅ renderComparisonView done');
-                
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 console.log('✅ All views rendered successfully');
             } catch (error) {
                 console.error(`❌ Error loading data (retries left=${retries}):`, error);
@@ -1311,10 +1358,6 @@
                 'overview': 'overviewView',
                 'scoring': 'scoringView',
                 'detailed': 'detailedView',
-<<<<<<< HEAD
-                'comparison': 'comparisonView',
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 'rawdata': 'rawdataView'
             };
 
@@ -1330,13 +1373,8 @@
                 renderScoringView();
             } else if (viewName === 'rawdata') {
                 renderRawDataView();
-<<<<<<< HEAD
-            } else if (viewName === 'comparison') {
-                renderComparisonView();
-=======
             } else if (viewName === 'detailed') {
                 renderDetailedView();
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             }
         }
 
@@ -1363,13 +1401,9 @@
         }
 
         function renderDistributionChart() {
-<<<<<<< HEAD
-            const scores = allMSAs.map(m => m.Investment_Score || 0);
-=======
             // Sort MSAs by Investment Score (highest to lowest)
             const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
             const scores = sorted.map(m => m.Investment_Score || 0);
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
 
             const ctx = document.getElementById('distributionChart');
             if (currentChart) currentChart.destroy();
@@ -1377,11 +1411,7 @@
             currentChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-<<<<<<< HEAD
-                    labels: allMSAs.slice(0, 15).map(m => m.msa_name.substring(0, 20) + '...'),
-=======
                     labels: sorted.slice(0, 15).map(m => m.msa_name.substring(0, 20) + '...'),
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                     datasets: [{
                         label: 'Investment Score',
                         data: scores.slice(0, 15),
@@ -1413,14 +1443,10 @@
             const tbody = document.getElementById('tableBody');
             tbody.innerHTML = '';
 
-<<<<<<< HEAD
-            allMSAs.slice(0, 20).forEach((msa, index) => {
-=======
             // Sort MSAs by Investment Score (highest to lowest)
             const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
 
             sorted.slice(0, 20).forEach((msa, index) => {
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
@@ -1514,9 +1540,7 @@
         function renderScoringTable() {
             const tbody = document.getElementById('scoringTableBody');
             tbody.innerHTML = '';
-            
-            const sorted = [...allMSAs].sort((a, b) => (b.customScore || 0) - (a.customScore || 0));
-            
+
             const isDefaultWeights = 
                 Math.abs(currentWeights.economic - 0.25) < 0.01 &&
                 Math.abs(currentWeights.stability - 0.15) < 0.01 &&
@@ -1524,16 +1548,23 @@
                 Math.abs(currentWeights.pricing - 0.15) < 0.01 &&
                 Math.abs(currentWeights.valuation - 0.20) < 0.01 &&
                 Math.abs(currentWeights.capital - 0.10) < 0.01;
+
+            const sorted = [...allMSAs].sort((a, b) => {
+                const scoreA = isDefaultWeights ? (a.Investment_Score || 0) : (a.customScore || 0);
+                const scoreB = isDefaultWeights ? (b.Investment_Score || 0) : (b.customScore || 0);
+                return scoreB - scoreA;
+            });
             
             sorted.slice(0, 10).forEach((msa, index) => {
-                const scoreChange = isDefaultWeights ? 0 : ((msa.customScore || 0) - (msa.Investment_Score || 0)).toFixed(1);
+                const displayScore = isDefaultWeights ? (msa.Investment_Score || 0) : (msa.customScore || 0);
+                const scoreChange = isDefaultWeights ? 0 : (displayScore - (msa.Investment_Score || 0)).toFixed(1);
                 const changeColor = scoreChange > 0 ? '#4caf50' : scoreChange < 0 ? '#f44336' : '#999';
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td><strong>${msa.msa_name}</strong></td>
-                    <td><strong style="color: #667eea;">${(msa.customScore || 0).toFixed(2)}</strong></td>
+                    <td><strong style="color: #667eea;">${displayScore.toFixed(2)}</strong></td>
                     <td style="color: ${changeColor}; font-weight: bold;">${scoreChange > 0 ? '+' : ''}${scoreChange}</td>
                 `;
                 tbody.appendChild(row);
@@ -1632,12 +1663,8 @@
         function renderComparisonView() {
             console.log('📈 Rendering 6D Analysis View...');
 
-<<<<<<< HEAD
-            const top3 = allMSAs.slice(0, 3);
-=======
             const sorted = [...allMSAs].sort((a, b) => (b.Investment_Score || 0) - (a.Investment_Score || 0));
             const top3 = sorted.slice(0, 3);
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             selectedMSAsForComparison = top3.map(m => m.msa_code);
             
             renderMSAList();
@@ -1778,13 +1805,6 @@
             return colors[idx % colors.length];
         }
 
-<<<<<<< HEAD
-        // ========================================
-        // MSA Detail View
-        // ========================================
-
-=======
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         function showMSADetail(msaCode) {
             console.log(`🔍 Loading details for MSA ${msaCode}...`);
 
@@ -1863,20 +1883,15 @@
 
             document.getElementById('msaDetail').innerHTML = detailHtml;
             
-<<<<<<< HEAD
-=======
             // Update 6D Analysis to show only this MSA
             selectedMSAsForComparison = [msaCode];
             renderRadarChart();
             
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
             document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
             document.getElementById('detailedView').classList.add('active');
             document.getElementById('detailedView').scrollIntoView({ behavior: 'smooth' });
         }
 
-<<<<<<< HEAD
-=======
         function renderDetailedView() {
             console.log('📈 Rendering Detailed View with 6D Analysis...');
 
@@ -1888,7 +1903,6 @@
             renderRadarChart();
         }
 
->>>>>>> f4a894c3d9b73d5909f3299d5b27e5fedfe16ef0
         // ========================================
         // Search and Autocomplete
         // ========================================
@@ -1955,6 +1969,7 @@
         }
 
         console.log('✅ Script loaded');
+
     </script>
 </body>
 </html>

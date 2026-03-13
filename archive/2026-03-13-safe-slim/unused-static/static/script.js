@@ -57,15 +57,23 @@ function setupEventListeners() {
 
 async function loadData(retries = 3, delayMs = 1000) {
     try {
-        console.log('📡 Fetching rankings data...');
-        const response = await axios.get('/api/msa-rankings');
-        allMSAs = response.data.msas;
+        console.log('📡 Fetching data from sample_data.json...');
+        // Add cache-busting parameter to ensure fresh data
+        const timestamp = new Date().getTime();
+        const response = await fetch(`/data/sample_data.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const jsonData = await response.json();
+        allMSAs = jsonData.msas;
 
-        console.log(`✅ Loaded ${allMSAs.length} MSAs`);
+        console.log(`✅ Loaded ${allMSAs.length} MSAs from JSON`);
 
         // Load stats and populate UI
         console.log('📊 Loading stats...');
-        await loadStats();
+        loadStats(jsonData.stats);
         console.log('✅ Stats loaded');
 
         // Render initial views
@@ -93,15 +101,20 @@ async function loadData(retries = 3, delayMs = 1000) {
     }
 }
 
-async function loadStats() {
+function loadStats(stats) {
     try {
-        const response = await axios.get('/api/stats');
-        const stats = response.data;
+        if (stats) {
+            const totalMsas = allMSAs.length;
+            const scores = allMSAs.map(m => m.Investment_Score || m.Index_Score || 0);
+            const avgScore = (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(2);
+            const maxScore = Math.max(...scores).toFixed(2);
+            const year = stats.year || 2024;
 
-        document.getElementById('totalMSA').textContent = stats.total_msas;
-        document.getElementById('avgScore').textContent = stats.avg_score;
-        document.getElementById('maxScore').textContent = stats.max_score;
-        document.getElementById('yearValue').textContent = stats.latest_year;
+            document.getElementById('totalMSA').textContent = totalMsas;
+            document.getElementById('avgScore').textContent = avgScore;
+            document.getElementById('maxScore').textContent = maxScore;
+            document.getElementById('yearValue').textContent = year;
+        }
     } catch (error) {
         console.error('❌ Error loading stats:', error);
     }

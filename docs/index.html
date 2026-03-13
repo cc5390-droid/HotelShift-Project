@@ -923,7 +923,7 @@
                 <canvas id="distributionChart" height="80"></canvas>
             </div>
             
-            <h2>Top 10 MSAs Ranking</h2>
+            <h2>Top 20 MSAs Ranking</h2>
             <div class="table-container">
                 <table id="rankingTable" class="ranking-table">
                     <thead>
@@ -1032,28 +1032,6 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-            </div>
-            
-            <div class="dimensions-legend" style="margin-top: 40px;">
-                <h3 style="grid-column: 1/-1; color: #FFD700; margin-bottom: 20px;">6 Investment Dimensions</h3>
-                <div class="dimension">
-                    <span class="dim-label">📈 Economic Index:</span> Employment Rate, Employment Growth, Population Growth & Income Growth
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🛡️ Stability Index:</span> Rent-to-Income Ratio & Vacancy Rate
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📦 Supply Index:</span> New Multifamily Unit Supply
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">💰 Pricing Index:</span> Rent Growth
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">📊 Valuation Index:</span> Implied Property Value (Annual Rent, OER & Cap Rate)
-                </div>
-                <div class="dimension">
-                    <span class="dim-label">🏦 Capital Index:</span> Cap Rate Spread & Effective Tax Spread
                 </div>
             </div>
             
@@ -1562,9 +1540,7 @@
         function renderScoringTable() {
             const tbody = document.getElementById('scoringTableBody');
             tbody.innerHTML = '';
-            
-            const sorted = [...allMSAs].sort((a, b) => (b.customScore || 0) - (a.customScore || 0));
-            
+
             const isDefaultWeights = 
                 Math.abs(currentWeights.economic - 0.25) < 0.01 &&
                 Math.abs(currentWeights.stability - 0.15) < 0.01 &&
@@ -1572,16 +1548,23 @@
                 Math.abs(currentWeights.pricing - 0.15) < 0.01 &&
                 Math.abs(currentWeights.valuation - 0.20) < 0.01 &&
                 Math.abs(currentWeights.capital - 0.10) < 0.01;
+
+            const sorted = [...allMSAs].sort((a, b) => {
+                const scoreA = isDefaultWeights ? (a.Investment_Score || 0) : (a.customScore || 0);
+                const scoreB = isDefaultWeights ? (b.Investment_Score || 0) : (b.customScore || 0);
+                return scoreB - scoreA;
+            });
             
             sorted.slice(0, 10).forEach((msa, index) => {
-                const scoreChange = isDefaultWeights ? 0 : ((msa.customScore || 0) - (msa.Investment_Score || 0)).toFixed(1);
+                const displayScore = isDefaultWeights ? (msa.Investment_Score || 0) : (msa.customScore || 0);
+                const scoreChange = isDefaultWeights ? 0 : (displayScore - (msa.Investment_Score || 0)).toFixed(1);
                 const changeColor = scoreChange > 0 ? '#4caf50' : scoreChange < 0 ? '#f44336' : '#999';
                 
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td>${index + 1}</td>
                     <td><strong>${msa.msa_name}</strong></td>
-                    <td><strong style="color: #667eea;">${(msa.customScore || 0).toFixed(2)}</strong></td>
+                    <td><strong style="color: #667eea;">${displayScore.toFixed(2)}</strong></td>
                     <td style="color: ${changeColor}; font-weight: bold;">${scoreChange > 0 ? '+' : ''}${scoreChange}</td>
                 `;
                 tbody.appendChild(row);
