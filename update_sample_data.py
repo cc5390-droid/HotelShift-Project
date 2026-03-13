@@ -338,8 +338,6 @@ def main() -> None:
 
     targets = [
         ROOT / "docs/data/sample_data.json",
-        ROOT / "Capstone-Coding/msa-investment-app/data/sample_data.json",
-        ROOT / "Capstone-Coding/Capstone-Coding/msa-investment-app/data/sample_data.json",
     ]
 
     for target in targets:
