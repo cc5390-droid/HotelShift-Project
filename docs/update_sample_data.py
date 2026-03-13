@@ -7,7 +7,8 @@ import numpy as np
 import pandas as pd
 import requests
 
-ROOT = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = SCRIPT_DIR.parent
 API_KEY = "722729cfa99e33f0f76a6c4385beb4a6394f1728"
 
 VARIABLES_ACS1 = {
@@ -90,7 +91,7 @@ def minmax01(series: pd.Series) -> pd.Series:
 
 
 def load_existing_hers_map() -> dict[str, int]:
-    existing_file = ROOT / "docs/data/sample_data.json"
+    existing_file = PROJECT_ROOT / "docs/data/sample_data.json"
     if not existing_file.exists():
         return {}
 
@@ -128,13 +129,13 @@ def build_payload() -> dict:
     ].unique()
     msa_features = msa_features[msa_features["msa_code"].isin(eligible_codes)].copy()
 
-    df_tax = pd.read_excel(ROOT / "State Property Tax.xlsx", sheet_name="Tax new")
+    df_tax = pd.read_excel(PROJECT_ROOT / "State Property Tax.xlsx", sheet_name="Tax new")
     df_tax["Diff_Effective_Rate"] = (
         pd.to_numeric(df_tax["Hotel Effective Rate"], errors="coerce")
         - pd.to_numeric(df_tax["Multifamily Effective Rate"], errors="coerce")
     )
 
-    df_cap = pd.read_excel(ROOT / "Cap_Rate_Gemini (1).xlsx", sheet_name="cap rate")
+    df_cap = pd.read_excel(PROJECT_ROOT / "Cap_Rate_Gemini (1).xlsx", sheet_name="cap rate")
     df_cap["Hotel Cap"] = pd.to_numeric(df_cap["Hotel Cap"], errors="coerce")
     df_cap["Multifamily Cap"] = pd.to_numeric(df_cap["Multifamily Cap"], errors="coerce")
     df_cap["Cap Spread"] = df_cap["Hotel Cap"] - df_cap["Multifamily Cap"]
@@ -164,7 +165,7 @@ def build_payload() -> dict:
         how="left",
     )
 
-    df_oer = pd.read_excel(ROOT / "Cap_Rate_Gemini (1).xlsx", sheet_name="OER")
+    df_oer = pd.read_excel(PROJECT_ROOT / "Cap_Rate_Gemini (1).xlsx", sheet_name="OER")
     df_oer = df_oer.rename(columns={"Operating Expense Ratio (OER)": "OER"})
     df_oer["msa_code"] = df_oer["msa_code"].astype(str)
     df_oer["OER"] = pd.to_numeric(df_oer["OER"], errors="coerce")
@@ -337,7 +338,7 @@ def main() -> None:
     payload = build_payload()
 
     targets = [
-        ROOT / "docs/data/sample_data.json",
+        PROJECT_ROOT / "docs/data/sample_data.json",
     ]
 
     for target in targets:
